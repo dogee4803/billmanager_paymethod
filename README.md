@@ -1,3 +1,5 @@
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/main/README.en.md)
+[![ru](https://img.shields.io/badge/lang-ru-blue.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/main/README.md)
 # billmanager_paymethod
 Создание метода оплаты Tinkoff для billmanager 
 
@@ -59,6 +61,7 @@ ln -s usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/testpayment.py /usr/l
 1) Формирование платежа на стороне платежной системы, получение ссылки на оплату, переход по ней.
 2) Частично реализована валидация введённых данных. Идёт проверка по совпадению имени и паролю терминала для Tinkoff, однако при проверке минимальной суммы выскакивает ошибка во время обработки условия перед исключением.
 3) Отредактирован файл xml для success_url_page и fail_url_page
+4) Форма payment_form перенесена в отдельный файл с использованием шаблона через Jinja2 
 
 # Что надо сделать
 1) Исправить ошибку при обработке условия для минимального размера платы в валидации.
