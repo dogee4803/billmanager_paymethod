@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
 import payment
-import sys
 import requests
 import hashlib
 import json
+import sys
+from jinja2 import Environment, FileSystemLoader
 
 import xml.etree.ElementTree as ET
 
@@ -89,56 +90,10 @@ class TestPaymentCgi(payment.PaymentCgi):
 
         # Формировние html и отправка в stdout для перехода по redirect_url
         # После в планах добавить получение результатов оплаты, а затем сделать страницы возврата
-        payment_form =  "<html>\n";
-        payment_form += "<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>\n"
-        payment_form += "<link rel='shortcut icon' href='billmgr.ico' type='image/x-icon' />"
-        payment_form += "  <script language='JavaScript'>\n"
-        payment_form += "    function DoSubmit() {\n"
-        payment_form += "      window.location.assign('" + redirect_url + "');\n"
-        payment_form += "    }\n"
-        payment_form += "  </script>\n"
-        payment_form += "</head>\n"
-        # Проверка результатов оплаты. Пока не сделал реализацию запроса после заполнения формы. Как идёт запрос на след. строке
-        #r_status = requests.post('https://securepay.tinkoff.ru/v2/GetState', data = json.dumps(status_data), headers=headers) 
-        payment_form += "<body onload='DoSubmit()'>\n"
-        payment_form += "  <script>\n"
-        #payment_form += "    function handlePaymentResult(success) {\n"
-        #payment_form += "      if (success) {\n"
-        #payment_form += "        window.location.assign('" + success_url + "');\n"
-        #payment_form += "      } else {\n"
-        #payment_form += "        window.location.assign('" + fail_url + "');\n"
-        #payment_form += "      }\n"
-        #payment_form += "    }\n"
-        #payment_form += "    var urlParams = new URLSearchParams(window.location.search);\n"
-        #payment_form += "    var paymentSuccess = urlParams.get('paymentSuccess') === 'true';\n"
-        #payment_form += "    handlePaymentResult(paymentSuccess);\n"
-        payment_form += "  </script>\n"
-        payment_form += "</body>\n"
-        payment_form += "</html>\n";
+        payment_form_env = Environment(loader=FileSystemLoader('/usr/local/mgr5/mypaymethod/templates'))
+        payment_form_template = payment_form_env.get_template('payment_form.html')
+        payment_form = payment_form_template.render(redirect_url=redirect_url)
 
         sys.stdout.write(payment_form)
 
-        # Попытка сделать через скрипт из документации. Может вернусь позже.
-        
-        """
-        payment_form = "<html>\n"
-        payment_form += "<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />\n"
-        payment_form += "<link rel='shortcut icon' href='billmgr.ico' type='image/x-icon' />\n"
-        payment_form += "   <script language='JavaScript'>\n"
-        payment_form += "       function submit() {\n"
-        payment_form += "           document.frm.submit();\n"
-        payment_form += "       }\n"
-        payment_form += "   </script>\n"
-        payment_form += "</head>\n"
-        payment_form += "<body onload='submit()'>\n"
-        payment_form += "   <form name='frm' action='https://securepay.tinkoff.ru/v2/Init' method='post'>\n"
-        payment_form += "       <input type='hidden' name='TerminalKey' value='" + terminal_key + "'>\n"
-        payment_form += "       <input type='hidden' name='Amount' value='" + amount + "'>\n"
-        payment_form += "       <input type='hidden' name='OrderId' value='" + order_id + "'>\n"
-        payment_form += "       <input type='hidden' name='Token' value='" + token + "'>\n"
-        payment_form += "   </form>\n"
-        payment_form += "</body>\n"
-        payment_form += "</html>\n";
-
-        """
 TestPaymentCgi().Process()
