@@ -1,5 +1,5 @@
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/main/README.en.md)
-[![ru](https://img.shields.io/badge/lang-ru-blue.svg)](https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/dogee4803/billmanager_paymethod/edit/main/README.en.md)
+[![ru](https://img.shields.io/badge/lang-ru-blue.svg)](https://github.com/dogee4803/billmanager_paymethod/edit/main/README.md)
 # billmanager_paymethod
 Создание метода оплаты Tinkoff для billmanager 
 
