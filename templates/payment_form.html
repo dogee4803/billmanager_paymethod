@@ -9,7 +9,7 @@
         }
     </script>
 </head>
-<!-- Проверка результатов оплаты. Пока не сделал реализацию запроса после заполнения формы. Как идёт запрос на след. строке
+<!-- Проверка результатов оплаты. Пока не сделал реализацию запроса после заполнения формы из-за проблем с токеном. Как идёт запрос на след. строке
 r_status = requests.post('https://securepay.tinkoff.ru/v2/GetState', data = json.dumps(status_data), headers=headers) -->
 <body onload='DoSubmit()'>
     <script>
@@ -29,25 +29,3 @@ r_status = requests.post('https://securepay.tinkoff.ru/v2/GetState', data = json
     </script>
 </body>
 </html>
-<!-- 
-Попытка сделать через скрипт из документации. Может вернусь позже.
-
-<html>
-<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-<link rel='shortcut icon' href='billmgr.ico' type='image/x-icon' />
-   <script language='JavaScript'>
-       function submit() {
-           document.frm.submit();
-       }
-   </script>
-</head>
-<body onload='submit()'>
-   <form name='frm' action='https://securepay.tinkoff.ru/v2/Init' method='post'>
-       <input type='hidden' name='TerminalKey' value='" + terminal_key + "'>
-       <input type='hidden' name='Amount' value='" + amount + "'>
-       <input type='hidden' name='OrderId' value='" + order_id + "'>
-       <input type='hidden' name='Token' value='" + token + "'>
-   </form>
-</body>
-</html>
--->

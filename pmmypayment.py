@@ -32,16 +32,22 @@ class MyPaymentModule(payment.PaymentModule):
 
         terminalkey_node = xml.find('./terminalkey')
         terminalpsw_node = xml.find('./terminalpsw')
-        minamount_node = xml.find('./minamount')
+        minamount_node = xml.find('.//paymethod/minamount')
         terminalkey = terminalkey_node.text if terminalkey_node is not None else ''
         terminalpsw = terminalpsw_node.text if terminalpsw_node is not None else ''
-        minamount = int(minamount_node.text) if minamount_node is not None else 0
+        minamount = float(minamount_node.text) if minamount_node is not None else 0
 
-        # Заменям условие проверки для подключения к Tinkoff, а также добавляем ограничение по минимальному платежу
+        # Заменям условие проверки для тестового подключения к Tinkoff, а также добавляем ограничение по минимальному платежу в размере 100 рублей
         if terminalkey != 'TinkoffBankTest' or terminalpsw != 'TinkoffBankTest':
             raise billmgr.exception.XmlException('wrong_terminal_info')
-        #if minamount < 10:
-            #raise billmgr.exception.XmlException('msg_error_wrong_min_amount_info')
+        if minamount < 100:
+            raise billmgr.exception.XmlException('too_small_min_amount')
+
+        # Здесь условия уже для реального подключения, а не проверки
+        '''
+        if len(terminalkey) != 20 or len(terminalpsw) != 20:
+            raise billmgr.exception.XmlException('wrong_terminal_info')
+        '''
     
 
     # в тестовом примере получаем необходимые платежи

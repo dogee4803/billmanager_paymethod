@@ -7,8 +7,6 @@ import json
 import sys
 from jinja2 import Environment, FileSystemLoader
 
-import xml.etree.ElementTree as ET
-
 import billmgr.logger as logging
 
 MODULE = 'payment'
@@ -47,14 +45,6 @@ class TestPaymentCgi(payment.PaymentCgi):
         data["Token"] = hashed_result
 
 
-        # Параметры для неудачной попытки запуска скрипта из документации (см. ниже). Может вернусь позже.
-        """
-        terminal_key = self.paymethod_params["terminalkey"]
-        amount = float(self.payment_params["paymethodamount"]) * 100
-        order_id = self.elid + "#" + self.payment_params["randomnumber"]
-        token = data["Token"]
-        """
-
         # Инициализация платежа и логирование его данных
         r = requests.post('https://securepay.tinkoff.ru/v2/Init', data = json.dumps(data), headers=headers) 
         logger.info(f"data = {data}")
@@ -90,10 +80,15 @@ class TestPaymentCgi(payment.PaymentCgi):
 
         # Формировние html и отправка в stdout для перехода по redirect_url
         # После в планах добавить получение результатов оплаты, а затем сделать страницы возврата
+        
+        # Создание окружения для Jinja2
         payment_form_env = Environment(loader=FileSystemLoader('/usr/local/mgr5/mypaymethod/templates'))
+        # Загрузка шаблона из файла
         payment_form_template = payment_form_env.get_template('payment_form.html')
+        # Создание объекта шаблона
         payment_form = payment_form_template.render(redirect_url=redirect_url)
 
+        # Вывод формы
         sys.stdout.write(payment_form)
 
 TestPaymentCgi().Process()

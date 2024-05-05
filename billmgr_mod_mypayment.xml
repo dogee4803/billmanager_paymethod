@@ -75,7 +75,6 @@
 
 		<messages name="msgerror">
 			<msg name="msg_error_wrong_terminal_info">Введены неверные данные терминала или терминал заблокирован</msg>
-			<msg name="msg_error_wrong_min_amount_info">Введена неверная сумма минимального платежа</msg>
 			<msg name="msg_error_payment_fraud">Платёжная система посчитала платёж мошенническим</msg>
 			<msg name="msg_error_no_url_provided">Платёжная система не вернула ссылку оплаты</msg>
 			<msg name="msg_error_no_payment_id_provided">Платёжная система не вернула номер счёта</msg>
@@ -84,7 +83,7 @@
 			<msg name="msg_error_generic_error">Произошла ошибка</msg>
 			<msg name="msg_error_unknown_error">Произошла неизвестная ошибка</msg>
 			<msg name="msg_error_json_parsing_error">Платёжная система вернула неверный ответ</msg>
-			<msg name="msg_error_too_small_min_amount">Минимальная сумма платежа не может быть меньше 1 рубля</msg>
+			<msg name="msg_error_too_small_min_amount">Минимальная сумма платежа не может быть меньше 100 рублей</msg>
 			<msg name="msg_error_not_enough_money_to_refund">Недостаточно денег в платеже для совершения возврата</msg>
 			<msg name="msg_error_only_support_rubles">Для оплаты поддерживаются только рубли</msg>
 		</messages>
