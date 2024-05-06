@@ -8,6 +8,10 @@ import billmgr.logger as logging
 
 import xml.etree.ElementTree as ET
 
+from mypayment import gen_token
+import requests
+import json
+
 MODULE = 'payment'
 logging.init_logging('pmmypayment')
 logger = logging.get_logger('pmmypayment')
@@ -50,22 +54,45 @@ class MyPaymentModule(payment.PaymentModule):
         '''
     
 
-    # в тестовом примере получаем необходимые платежи
-    # и переводим их все в статус 'оплачен'
     def CheckPay(self):
         logger.info("run checkpay")
+        logger.info()
 
         # получаем список платежей в статусе оплачивается
         # и которые используют обработчик pmmypayment
         payments = billmgr.db.db_query(f'''
-            SELECT p.id FROM payment p
+            SELECT p.id, pm.xmlparams, p.externalid FROM payment p
             JOIN paymethod pm
             WHERE module = 'pmmypayment' AND p.status = {payment.PaymentStatus.INPAY.value}
         ''')
-
         for p in payments:
-            logger.info(f"change status for payment {p['id']}")
-            payment.set_paid(p['id'], '', f"external_{p['id']}")
+            logger.info(f"status = {p['id']}")
 
+            # Вычисление Токена для запроса оплаты
+            status_data = dict()
+            status_data["TerminalKey"] = p["terminalkey"]
+            status_data["PaymentId"] = p["externalid"]
+            status_data["Token"] = gen_token(status_data, p["terminalpsw"])
+
+            headers = {"Content-Type": "application/json"}
+
+            # Запрос статуса оплаты и его логирование
+            status_r = requests.post('https://securepay.tinkoff.ru/v2/GetState', data = json.dumps(status_data), headers=headers) 
+            logger.info(f"Payment Success = {status_r.json()}")
+            logger.info(f"Payment Status = {status_r.json()}")
+            if status_r.json()["Success"] == True:
+                # Прочие статусы можно глянуть тут https://www.tinkoff.ru/kassa/dev/payments/#tag/Scenarii-oplaty-po-karte/Statusnaya-model-platezha
+                if status_r.json()["Status"] == "CONFIRMED":
+                    payment.set_paid(p['id'], '', f"external_{p['id']}")
+                elif status_r.json()["Status"] == "CANCELED":
+                    payment.set_canceled(p['id'], '', f"external_{p['id']}")
+                elif status_r.json()["Status"] == "REJECTED":
+                    payment.set_canceled(p['id'], '', f"external_{p['id']}")
+                elif status_r.json()["Status"] == "AUTH_FAIL":
+                    payment.set_canceled(p['id'], '', f"external_{p['id']}")
+                elif status_r.json()["Status"] == "DEADLINE_EXPIRED":
+                    payment.set_canceled(p['id'], '', f"external_{p['id']}")
+                    
+                    
 
 MyPaymentModule().Process()

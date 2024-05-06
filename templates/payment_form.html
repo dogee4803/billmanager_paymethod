@@ -9,23 +9,8 @@
         }
     </script>
 </head>
-<!-- Проверка результатов оплаты. Пока не сделал реализацию запроса после заполнения формы из-за проблем с токеном. Как идёт запрос на след. строке
-r_status = requests.post('https://securepay.tinkoff.ru/v2/GetState', data = json.dumps(status_data), headers=headers) -->
 <body onload='DoSubmit()'>
     <script>
-        /*
-        function handlePaymentResult(success) {
-            if (success) {
-                window.location.assign('" + success_url + "');
-            } 
-            else {
-                window.location.assign('" + fail_url + "');
-            }
-        }
-        var urlParams = new URLSearchParams(window.location.search);
-        var paymentSuccess = urlParams.get('paymentSuccess') === 'true';
-        handlePaymentResult(paymentSuccess);
-        */
     </script>
 </body>
 </html>
