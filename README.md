@@ -32,6 +32,8 @@
 
 ├── requirements.txt
 
+├── tinkoffApiHandler.py
+
 └── mypayment.py
 
 
@@ -45,6 +47,8 @@
 ⇨ ./pmmypayment.py - основной модуль обработчика платежной системы.
 
 ⇨ ./mypayment.py - cgi для перехода в платежную систему для оплаты.
+
+⇨ ./tinkoffApiHandler.py - модуль работы с api Tinkoff.
 
 ⇨ ./billmgr_mod_mypayment.xml - xml с полями на форме настройки метода оплаты и сообщениями.
 
@@ -65,15 +69,3 @@ cp /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/billmgr_mod_XXXpayment.
 ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/pmXXXpayment.py /usr/local/mgr5/paymethods/pmXXXpayment
 
 ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/XXXpayment.py /usr/local/mgr5/cgi/XXXpayment
-
-
-# Что сделано
-1) Формирование платежа на стороне платежной системы, получение ссылки на оплату, переход по ней.
-2) Реализована валидация введённых данных.
-3) Отредактирован файл xml для success_url_page и fail_url_page.
-4) Форма payment_form перенесена в отдельный файл с использованием шаблона через Jinja2.
-
-
-# Что ещё надо сделать
-1) В основном обработчике дополнить функциональность для проверки статуса платежа.
-2) Добавить в валидацию проверку на совместимость версии API.

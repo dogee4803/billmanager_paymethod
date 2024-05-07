@@ -28,34 +28,23 @@ class PaymentStatus(Enum):
     CANCELED = 9
 
 
-# перевести платеж в статус "оплачивается"
 def set_in_pay(payment_id: str, info: str, externalid: str):
-    '''
-    payment_id - id платежа в BILLmanager
-    info       - доп. информация о платеже от платежной системы
-    externalid - внешний id на стороне платежной системы
-    '''
     MgrctlXml('payment.setinpay', elid=payment_id, info=info, externalid=externalid)
 
 
-# перевести платеж в статус "мошеннический"
 def set_fraud(payment_id: str, info: str, externalid: str):
     MgrctlXml('payment.setfraud', elid=payment_id, info=info, externalid=externalid)
 
 
-# перевести платеж в статус "оплачен"
 def set_paid(payment_id: str, info: str, externalid: str):
     MgrctlXml('payment.setpaid', elid=payment_id, info=info, externalid=externalid)
 
 
-# перевести платеж в статус "отменен"
 def set_canceled(payment_id: str, info: str, externalid: str):
     MgrctlXml('payment.setcanceled', elid=payment_id, info=info, externalid=externalid)
 
 
 class PaymentCgi(ABC):
-    # основной метод работы cgi
-    # абстрактный метод, который необходимо переопределить в конкретной реализации
     @abstractmethod
     def Process(self):
         pass
@@ -109,9 +98,7 @@ class PaymentCgi(ABC):
         for elem in payment_info_xml.findall("./payment/paymethod/"):
             self.paymethod_params[elem.tag] = elem.text
 
-        # получаем параметры пользователя
-        # получаем с помощью функции whoami информацию о авторизованном пользователе
-        # в качестве параметра передаем auth - токен сессии
+
         user_node = MgrctlXml("whoami", auth = self.auth).find('./user')
         if user_node is None:
             raise billmgr.exception.XmlException("invalid_whoami_result")
@@ -148,24 +135,13 @@ FEATURE_PMUSERCREATE = "pmusercreate"       # для ссылки на реги�
 PAYMENT_PARAM_PAYMENT_SCRIPT = "payment_script" # mancgi/<наименование cgi скрипта>
 
 
-class PaymentModule(ABC):
-    # Абстрактные методы CheckPay и PM_Validate необходимо переопределить в своей реализации
-    # см пример реализации в pmtestpayment.py
 
-    # проверить оплаченные платежи
-    # реализация --command checkpay
-    # здесь делаем запрос в БД, получаем список платежей в статусе "оплачивается"
-    # идем в платежку и проверяем прошли ли платежи
-    # если платеж оплачен, выставляем соответствующий статус c помощью функции set_paid
+class PaymentModule(ABC):
+
     @abstractmethod
     def CheckPay(self):
         pass
 
-    # вызывается для проверки введенных в настройках метода оплаты значений
-    # реализация --command pmvalidate
-    # принимается xml с веденными на форме значениями
-    # если есть некорректные значения, то бросаем исключение billmgr.exception.XmlException
-    # если все значение валидны, то ничего не возвращаем, исключений не бросаем
     @abstractmethod
     def PM_Validate(self, xml):
         pass
@@ -175,7 +151,6 @@ class PaymentModule(ABC):
         self.params = {}
 
     # возращает xml с кофигурацией метода оплаты
-    # реализация --command config
     def Config(self):
         config_xml = ET.Element('doc')
         feature_node = ET.SubElement(config_xml, 'feature')
@@ -190,7 +165,6 @@ class PaymentModule(ABC):
 
     def Process(self):
         try:
-            # лайтовый парсинг аргументов командной строки
             # ожидаем --command <наименование команды>
             if len(sys.argv) < 3:
                 raise billmgr.exception.XmlException("invalid_arguments")
@@ -213,4 +187,3 @@ class PaymentModule(ABC):
 
         except billmgr.exception.XmlException as exception:
             sys.stdout.write(exception.as_xml())
-

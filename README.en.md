@@ -32,19 +32,23 @@ Creating a Tinkoff payment method for billmanager
 
 ├── requirements.txt
 
+├── tinkoffApiHandler.py
+
 └── mypayment.py
 
 
 # Structure of the project
-⇨ ./billmgr - general functions for working with BILLmanager, a library that provides basic functionality (working with the database, logging, interacting with the panel via mgrctl).
+⇨ ./billmgr - General functions for working with BILLmanager, a library that provides basic functionality (working with the database, logging, interacting with the panel via mgrctl).
 
-⇨ ./templates - Foler with forms templates for sending data to bank payment system.
+⇨ ./templates - Folder with forms templates for sending data to bank payment system.
 
 ⇨ ./payment.py - Basic functionality for the implementation of CGI and the module for processing your payment module.
 
 ⇨ ./pmmypayment.py - The main module of the payment system processor.
 
 ⇨ ./mypayment.py - CGI to go to the payment system for payment.
+
+⇨ ./tinkoffApiHandler.py - The module for working with Tinkoff API
 
 ⇨ ./billmgr_mod_mypayment.xml - XML with fields on the payment method setup form and messages.
 
