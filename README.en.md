@@ -22,6 +22,8 @@ Creating a Tinkoff payment method for billmanager
 
 │   └── misc.py
 
+├── templates
+
 ├── billmgr_mod_mypayment.xml
 
 ├── payment.py
@@ -58,8 +60,8 @@ pip install -r requirements.txt
 
 
 # Integration in the BILLmanager structure
-cp usr/local/mgr5/<PROJECT_DIRECTORY>/billmgr_mod_mypayment.xml /usr/local/mgr5/etc/xml/
+cp /usr/local/mgr5/<PROJECT_DIRECTORY>/billmgr_mod_XXXpayment.xml /usr/local/mgr5/etc/xml/
 
-ln -s usr/local/mgr5/<PROJECT_DIRECTORY>/pmmypayment.py /usr/local/mgr5/paymethods/pmmypayment
+ln -s /usr/local/mgr5/<PROJECT_DIRECTORY>/pXXXypayment.py /usr/local/mgr5/paymethods/pmXXXpayment
 
-ln -s usr/local/mgr5/<PROJECT_DIRECTORY>/mypayment.py /usr/local/mgr5/cgi/mypayment
+ln -s /usr/local/mgr5/<PROJECT_DIRECTORY>/XXXpayment.py /usr/local/mgr5/cgi/XXXpayment

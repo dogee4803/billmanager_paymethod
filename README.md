@@ -22,6 +22,8 @@
 
 │   └── misc.py
 
+├── templates
+
 ├── billmgr_mod_mypayment.xml
 
 ├── payment.py
@@ -58,11 +60,11 @@ pip install -r requirements.txt
 
 
 # Размещение в структуре BILLmanager
-cp usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/billmgr_mod_mypayment.xml /usr/local/mgr5/etc/xml/
+cp /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/billmgr_mod_XXXpayment.xml /usr/local/mgr5/etc/xml/
 
-ln -s usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/pmtestpayment.py /usr/local/mgr5/paymethods/pmmypayment
+ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/pmXXXpayment.py /usr/local/mgr5/paymethods/pmXXXpayment
 
-ln -s usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/testpayment.py /usr/local/mgr5/cgi/mypayment
+ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/XXXpayment.py /usr/local/mgr5/cgi/XXXpayment
 
 
 # Что сделано
@@ -73,6 +75,5 @@ ln -s usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/testpayment.py /usr/l
 
 
 # Что ещё надо сделать
-1) При получении статуса платежа неправильно формируется токен.
-2) Закончить реализацию страниц возврата после оплаты. Заготовки уже написаны, осталось впихнуть получение статуса платежа после заполнения формы.
-3) В основном обработчике дополнить функциональность для проверки статуса платежа (следует из предыдущего).
+1) В основном обработчике дополнить функциональность для проверки статуса платежа.
+2) Добавить в валидацию проверку на совместимость версии API.

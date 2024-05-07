@@ -8,7 +8,7 @@ import billmgr.logger as logging
 
 import xml.etree.ElementTree as ET
 
-from mypayment import gen_token
+import hashlib
 import requests
 import json
 
@@ -68,11 +68,23 @@ class MyPaymentModule(payment.PaymentModule):
         for p in payments:
             logger.info(f"status = {p['id']}")
 
+            p_xml = ET.fromstring(p['xmlparams'])
+
             # Вычисление Токена для запроса оплаты
             status_data = dict()
-            status_data["TerminalKey"] = p["terminalkey"]
+            status_data["TerminalKey"] = p_xml.find("terminalkey").text
             status_data["PaymentId"] = p["externalid"]
-            status_data["Token"] = gen_token(status_data, p["terminalpsw"])
+            # Здесь идёт генерация токена и его запись
+            status_data_temp = dict()
+            for key, value in status_data.items():
+                    if type(value) in [int, float, str, bool]:
+                        status_data_temp[key] = value
+            status_data_temp.update({"Password": p_xml.find("terminalpsw").text})
+            status_data_temp = dict(sorted(status_data_temp.items()))
+            concatenated_values = ''.join(list(status_data_temp.values()))
+            token = hashlib.sha256(concatenated_values.encode('utf-8')).hexdigest()
+            del status_data_temp
+            status_data["Token"] = token
 
             headers = {"Content-Type": "application/json"}
 
