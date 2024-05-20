@@ -4,7 +4,6 @@
 # billmanager_paymethod
 Создание метода оплаты Tinkoff для billmanager 
 
-
 # Структура по файлам
 .
 
@@ -56,16 +55,15 @@
 
 
 # Установка окружения (установка зависимостей глобально)
+```
 apt install python3-pip
-
 cd <ДИРЕКТОРИЯ_ПРОЕКТА>
-
 pip install -r requirements.txt
-
+```
 
 # Размещение в структуре BILLmanager
+```
 cp /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/billmgr_mod_XXXpayment.xml /usr/local/mgr5/etc/xml/
-
 ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/pmXXXpayment.py /usr/local/mgr5/paymethods/pmXXXpayment
-
 ln -s /usr/local/mgr5/<ДИРЕКТОРИЯ_ПРОЕКТА>/XXXpayment.py /usr/local/mgr5/cgi/XXXpayment
+```
